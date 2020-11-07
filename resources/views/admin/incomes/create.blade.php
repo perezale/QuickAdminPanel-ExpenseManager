@@ -13,7 +13,13 @@
                 <label for="income_category">{{ trans('cruds.income.fields.income_category') }}</label>
                 <select name="income_category_id" id="income_category" class="form-control select2">
                     @foreach($income_categories as $id => $income_category)
-                        <option value="{{ $id }}" {{ (isset($income) && $income->income_category ? $income->income_category->id : old('income_category_id')) == $id ? 'selected' : '' }}>{{ $income_category }}</option>
+                        <option value="{{ $id }}"
+                        @if(request()->has('income_category_id'))
+                         {{ request()->get('income_category_id') == $id ? 'selected': '' }}
+                        @else
+                         {{ (isset($income) && $income->income_category ? $income->income_category->id : old('income_category_id')) == $id ? 'selected' : '' }}                         
+                        @endif
+                         >{{ $income_category }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('income_category_id'))
@@ -24,7 +30,7 @@
             </div>
             <div class="form-group {{ $errors->has('entry_date') ? 'has-error' : '' }}">
                 <label for="entry_date">{{ trans('cruds.income.fields.entry_date') }}*</label>
-                <input type="text" id="entry_date" name="entry_date" class="form-control date" value="{{ old('entry_date', isset($income) ? $income->entry_date : '') }}" required>
+                <input type="text" id="entry_date" name="entry_date" class="form-control date" value="{{ old('entry_date', request()->has('today') ? \Carbon\Carbon::now() : (isset($income) ? $income->entry_date : '')) }}" required>
                 @if($errors->has('entry_date'))
                     <em class="invalid-feedback">
                         {{ $errors->first('entry_date') }}
@@ -36,7 +42,9 @@
             </div>
             <div class="form-group {{ $errors->has('amount') ? 'has-error' : '' }}">
                 <label for="amount">{{ trans('cruds.income.fields.amount') }}*</label>
-                <input type="number" id="amount" name="amount" class="form-control" value="{{ old('amount', isset($income) ? $income->amount : '') }}" step="0.01" required>
+                <input type="number" id="amount" name="amount" class="form-control" value="{{ old('amount', isset($income) ? $income->amount : '') }}" step="0.01" required
+                    @if (request()->has('today') && request()->has('income_category_id'))) autofocus @endif
+                    >
                 @if($errors->has('amount'))
                     <em class="invalid-feedback">
                         {{ $errors->first('amount') }}

@@ -2,12 +2,28 @@
 @section('content')
 @can('income_create')
     <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-3">
             <a class="btn btn-success" href="{{ route("admin.incomes.create") }}">
                 {{ trans('global.add') }} {{ trans('cruds.income.title_singular') }}
             </a>
         </div>
+        <div class="col-lg-3">
+            <a class="btn btn-warning" href="{{ route('admin.incomes.create', ['income_category_id'=>'3', 'today']) }}">
+                Agregar Ingreso Contado
+            </a>
+        </div>
+        <div class="col-lg-3">
+            <a class="btn btn-danger" href="{{ route('admin.incomes.create', ['income_category_id'=>'2', 'today']) }}">
+                Agregar Ingreso Transferencia
+            </a>
+        </div>
+        <div class="col-lg-3">
+            <a class="btn btn-info" href="{{ route('admin.incomes.create', ['income_category_id'=>'1', 'today']) }}">
+                Agregar Ingreso Mercado Pago
+            </a>
+        </div>
     </div>
+    
 @endcan
 <div class="card">
     <div class="card-header">
